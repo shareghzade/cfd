@@ -26,9 +26,18 @@ elif [[ $1 == "dir" ]] && [[ -n $2 ]]; then
 	mkdir -p ${2}
 	echo -e "\n\e[32mDirectory ${2} Created\n"
 else
-	read -p "Do you want file or directory? file/dir: " cfd
+	echo -ne "
+\n\e[32m1) Create File
+2) Create Directory
+0) Exit\e\n[0m
+	"
+	echo -ne "
+\e[34mChose a Number: \e[0m"
+	read cfd
+	echo ""
+
 	case ${cfd} in
-		file | File | FILE | FiLe | fIlE | f | F | fil | Fil)
+		file | File | FILE | FiLe | fIlE | f | F | fil | Fil | 1)
 
 			read -p "Please Enter File Name: " filename
 			while [[ -e ${filename} ]]
@@ -44,7 +53,7 @@ else
 			touch ${filename}
 			echo -e "\n\e[32mFile '${filename}' Created\n"
 			;;
-		dir | Dir | DIR | directory | Directory | DIRECTORY | d | D)
+		dir | Dir | DIR | directory | Directory | DIRECTORY | d | D | 2)
 
 			read -p "Please Enter Directory Name: " dirname
 			while [[ -d ${dirname} ]]
@@ -59,6 +68,10 @@ else
 			done
 				mkdir -p ${dirname} # -p let you to create multiple directory in a row. example: /test1/test2/test3
 				echo -e "\n\e[32mDirectory '${dirname}' Created\n\e[0m"
+			;;
+		exit | Exit | EXIT | 0)
+			echo "Exit the Program"
+			exit 0
 			;;
 
 		*)
