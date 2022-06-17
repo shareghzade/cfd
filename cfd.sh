@@ -19,6 +19,9 @@ fi
 # ./cfd.sh file <file_name>
 # ./cfd.sh dir <dir_name>
 
+
+
+### TODO add delete file and directory to arguments
 if [[ $1 == "file" ]] && [[ -n $2 ]]; then # -n means not empty. if $2 is empty will go to else condition
 	touch ${2}
 	echo -e "\n\e[32mFile ${2} Created\n"
@@ -29,6 +32,8 @@ else
 	echo -ne "
 \n\e[32m1) Create File
 2) Create Directory
+3) Delete File
+4) Delete Directory
 0) Exit\e\n[0m
 	"
 	echo -ne "
@@ -69,6 +74,46 @@ else
 				mkdir -p ${dirname} # -p let you to create multiple directory in a row. example: /test1/test2/test3
 				echo -e "\n\e[32mDirectory '${dirname}' Created\n\e[0m"
 			;;
+		3)
+			echo -ne "Enter File You Want to \e[31mDelete: \e[0m"
+			read delete_file
+			while [[ -z ${delete_file} ]]
+			do
+				echo -e "\e[31mInput Can't be Empty\e[0m"
+				echo -ne "Enter File You Want to \e[31mDelete: \e[0m"
+				read delete_file
+			done
+			while [[ ! -e ${delete_file} ]]
+			do
+				echo -e "\e[31mFile Does't Exist\e[0m"
+				echo -ne "Enter File You Want to \e[31mDelete: \e[0m"
+				read delete_file
+			done
+			$(rm ${delete_file})
+			echo -e "\e[32mFile Successfuly Deleted\e[0m"
+			;;
+
+
+		4)
+			echo -ne "Enter Directory You Want to \e[31mDelete: \e[0m"
+			read delete_dir
+			while [[ -z ${delete_dir} ]]
+			do
+				echo -e "\e[31mInput Can't be Empty\e[0m"
+				echo -ne "Enter Directory You Want to \e[31mDelete: \e[0m"
+				read delete_dir
+			done
+			while [[ ! -d ${delete_dir} ]]
+			do
+				echo -e "\e[31mDirectory Does't Exist\e[0m"
+				echo -ne "Enter Directory You Want to \e[31mDelete: \e[0m"
+				read delete_dir
+			done
+			$(sudo rm -rf ${delete_dir})
+			echo -e "\e[32mDirectory Successfuly Deleted\e[0m"
+
+			;;
+
 		exit | Exit | EXIT | 0)
 			echo "Exit the Program"
 			exit 0
